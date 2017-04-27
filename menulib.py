@@ -33,14 +33,24 @@ class MenuBar():
     # MENU functions
     ################
     def menu_open(self):
+        canvas = None
+        for item in self.root.children.values():
+            if item.label == "canvas":
+                canvas = item
+        assert canvas is not None
+        # canvas.meta is the board from the GoBoard class
+        moves = canvas.meta.MOVES
+        
         name = tkFileDialog.askopenfilename(\
                 filetypes=(("Smart Game Format (SGF)","*.sgf"),\
                 ("All files", "*.*")))
         print(name)
-        keys,moves = sgfparse.process(name)
+        keys,newmoves = sgfparse.process(name)
+        for ind,move in enumerate(newmoves):
+            color = 2 - ((ind+1)% 2)
+            canvas.meta.place_stone(move[0],move[1], color)
         for key in keys:
             print(key, keys[key])
-        print(moves)
 
     def menu_save(self):
         canvas = None

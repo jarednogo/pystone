@@ -194,6 +194,22 @@ class GoBoard():
             print("Suicide move!")
             return True
         return False
+
+    # Helper functions for black and white stones
+    def place_stone(self, i,j, color):
+        i_,j_ = self.b2c(i), self.b2c(j)
+
+        # Update the stones dictionary (and place the stone)
+        self.STONES[i,j] = self.stone(i_,j_,color)
+
+        # Update the board (black = 1, white = 2)
+        self.BOARD[i][j] = color
+            
+        # Also update the move
+        self.MOVES.append((i,j))
+    
+        # Remove stones
+        self.remove_stones()
     ################################
 
 
@@ -232,17 +248,8 @@ class GoBoard():
             return
     
         if not self.BOARD[i][j]:
-            # Update the stones dictionary (and place the stone)
-            self.STONES[i,j] = self.stone(i_, j_, cur)
-    
-            # Update the board (black = 1, white = 2)
-            self.BOARD[i][j] = cur
-            
-            # Also update the move
-            self.MOVES.append((i,j))
-    
-            # Remove stones
-            self.remove_stones()
+            # Place black stone
+            self.place_stone(i,j,cur)
     
             # Increment color
             self.CURFILL += 1

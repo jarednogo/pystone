@@ -9,7 +9,6 @@ import re
 from sys import argv,exit, stdout, stderr
 
 def process(filename):
-
     # open file
     with open(filename) as f:
         raw = f.read()
@@ -19,20 +18,41 @@ def process(filename):
 
     return keys, moves
 
+def parse(string):
+    while ']' in string and '[' in string:
+        i = 0
+        while string[i] == '(' or string[i] == ';':
+            i += 1
+        j = string.index('[')
+        key = string[i:j].strip().strip(';')
+        k = j
+        while string[k] != "]":
+            k += 1
+            if string[k-1:k+1] == "\\]":
+                k += 1
+        value = string[j+1:k]
+        string = string[k+1:]
+        yield key, value
+
 def make_keys(raw):
     # make dictionary
     KEYS = {}
+    gen = parse(raw)
+    for key,value in gen:
+        if key not in ['B','W','BL','WL','C']:
+            KEYS[key] = value
+    #print D
 
-    # Look for keys
-    L_ = re.findall('[A-Z]{1,2}\[[^\]]+\]', raw)
-    L = [item for item in L_ if not item.startswith('B[') \
-            and not item.startswith('W[') and not item.startswith('BL[')
-            and not item.startswith('WL[') and not item.startswith('C[')]
-
-    for item in L:
-        i = item.index('[') 
-        j = item.index(']') 
-        KEYS[item[:i]] = item[i+1:j]
+#    # Look for keys
+#    L_ = re.findall('[A-Z]{1,2}\[[^\]]+\]', raw)
+#    L = [item for item in L_ if not item.startswith('B[') \
+#            and not item.startswith('W[') and not item.startswith('BL[')
+#            and not item.startswith('WL[') and not item.startswith('C[')]
+#
+#    for item in L:
+#        i = item.index('[') 
+#        j = item.index(']') 
+#        KEYS[item[:i]] = item[i+1:j]
     return KEYS
 
 def pull_moves(raw):
