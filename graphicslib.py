@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import boardlib
+import sys
 import tkFileDialog
 from Tkinter import *
 
@@ -64,6 +65,13 @@ class GoBoard():
         # bind callbacks
         self.canvas.bind('<Motion>', self.motion)
         self.canvas.bind('<ButtonRelease-1>', self.left_click)
+
+        right_down = '<Button-3>'
+        right_up = '<ButtonRelease-3>'
+        # MAC compatibility!
+        if sys.platform == 'darwin':
+            right_down = '<Button-2>'
+            right_up = '<ButtonRelease-2>'
         self.canvas.bind('<Button-3>', self.right_click_down)
         self.canvas.bind('<ButtonRelease-3>', self.right_click_up)
 
