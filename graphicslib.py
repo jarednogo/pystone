@@ -72,8 +72,8 @@ class GoBoard():
         if sys.platform == 'darwin':
             right_down = '<Button-2>'
             right_up = '<ButtonRelease-2>'
-        self.canvas.bind('<Button-3>', self.right_click_down)
-        self.canvas.bind('<ButtonRelease-3>', self.right_click_up)
+        self.canvas.bind(right_down, self.right_click_down)
+        self.canvas.bind(right_up, self.right_click_up)
 
 
     
