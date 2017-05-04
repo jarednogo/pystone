@@ -17,6 +17,8 @@ class MenuBar():
         filemenu = Menu(menubar, tearoff=0)
         filemenu.add_command(label="Open", command=self.menu_open)
         filemenu.add_command(label="Save", command=self.menu_save)
+        filemenu.add_separator()
+        filemenu.add_command(label="Quit", command=self.root.quit)
     
         # add filemenu to the menu bar
         menubar.add_cascade(label="File", menu=filemenu)
